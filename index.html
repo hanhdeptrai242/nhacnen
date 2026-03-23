@@ -7,25 +7,26 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg-base:    #0e0f0f;
-    --bg-card:    #161818;
-    --bg-raised:  #1e2121;
-    --bg-hover:   #252929;
-    --border-dim: rgba(255,255,255,0.07);
-    --border-mid: rgba(255,255,255,0.13);
-    --border-hi:  rgba(255,255,255,0.22);
-    --accent:     #a8e6b0;
-    --accent2:    #6dd6c8;
-    --accent-dim: rgba(168,230,176,0.12);
-    --text-pri:   #edeeed;
-    --text-sec:   #8a9090;
-    --text-hint:  #515858;
+    --bg-base:    #0b0c0c;
+    --bg-card:    #131515;
+    --bg-raised:  #1c1f1f;
+    --bg-hover:   #222626;
+    --border-dim: rgba(255,255,255,0.06);
+    --border-mid: rgba(255,255,255,0.11);
+    --border-hi:  rgba(255,255,255,0.20);
+    --accent:     #7ee8a2;
+    --accent2:    #5dd6c8;
+    --accent-dim: rgba(126,232,162,0.10);
+    --accent-glow:rgba(126,232,162,0.18);
+    --text-pri:   #e8eaea;
+    --text-sec:   #7a8585;
+    --text-hint:  #424848;
     --danger:     #e07070;
+    --warn:       #e0b870;
     --radius-sm:  8px;
     --radius-md:  12px;
     --radius-lg:  18px;
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -33,460 +34,277 @@
     background: var(--bg-base);
     color: var(--text-pri);
     min-height: 100vh;
-    padding: 2.5rem 1rem 4rem;
+    padding: 2.5rem 1rem 5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  /* ── Header ── */
   .header {
-    width: 100%;
-    max-width: 760px;
-    margin-bottom: 2.5rem;
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
+    width: 100%; max-width: 760px;
+    margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 14px;
   }
-  .header-logo {
+  .logo {
     font-family: 'DM Mono', monospace;
-    font-size: 22px;
-    font-weight: 500;
-    color: var(--accent);
-    letter-spacing: -0.5px;
+    font-size: 20px; font-weight: 500;
+    color: var(--accent); letter-spacing: -0.3px;
   }
-  .header-sub {
-    font-size: 13px;
-    color: var(--text-hint);
-  }
+  .logo-dot { color: var(--text-hint); font-size: 14px; }
+  .header-sub { font-size: 12px; color: var(--text-hint); }
 
-  /* ── Card ── */
   .card {
     background: var(--bg-card);
     border: 1px solid var(--border-mid);
     border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    width: 100%;
-    max-width: 760px;
-    margin-bottom: 14px;
+    padding: 1.4rem 1.5rem;
+    width: 100%; max-width: 760px;
+    margin-bottom: 12px;
   }
-
   .section-label {
-    font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text-hint);
-    margin-bottom: 1rem;
+    font-size: 10px; font-family: 'DM Mono', monospace;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-hint); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px;
+    background: var(--border-dim);
   }
 
-  /* ── Background music list ── */
+  /* BG Grid */
   .bg-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 8px;
-    margin-bottom: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+    gap: 7px; margin-bottom: 12px; min-height: 46px;
   }
   .bg-item {
-    background: var(--bg-raised);
-    border: 1px solid var(--border-dim);
-    border-radius: var(--radius-md);
-    padding: 10px 14px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
+    background: var(--bg-raised); border: 1px solid var(--border-dim);
+    border-radius: var(--radius-md); padding: 10px 12px;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    display: flex; align-items: center; gap: 9px; min-width: 0;
   }
   .bg-item:hover { border-color: var(--border-hi); background: var(--bg-hover); }
-  .bg-item.active {
-    border-color: var(--accent);
-    background: var(--accent-dim);
-  }
+  .bg-item.active { border-color: var(--accent); background: var(--accent-dim); }
   .bg-item.active .bg-icon { color: var(--accent); }
-  .bg-icon {
-    font-size: 16px;
-    flex-shrink: 0;
-    color: var(--text-hint);
-    width: 18px;
-    text-align: center;
-  }
-  .bg-name {
-    font-size: 13px;
-    color: var(--text-sec);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .bg-icon { font-size: 14px; color: var(--text-hint); flex-shrink: 0; }
+  .bg-name { font-size: 12px; color: var(--text-sec); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .bg-item.active .bg-name { color: var(--accent); }
 
-  /* ── Volume sliders ── */
-  .vol-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 10px;
+  .state-msg {
+    font-size: 12px; font-family: 'DM Mono', monospace;
+    color: var(--text-hint); padding: 6px 0; grid-column: 1/-1;
   }
-  .vol-label {
-    font-size: 12px;
-    color: var(--text-sec);
-    width: 110px;
-    flex-shrink: 0;
-  }
-  .vol-label span {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--text-hint);
-    margin-left: 4px;
-  }
+  .state-msg.err { color: var(--danger); }
+
+  /* Sliders */
+  .vol-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .vol-label { font-size: 12px; color: var(--text-sec); width: 110px; flex-shrink: 0; }
   input[type=range] {
-    flex: 1;
-    -webkit-appearance: none;
-    height: 4px;
-    border-radius: 999px;
-    background: var(--bg-raised);
-    border: 1px solid var(--border-dim);
-    outline: none;
-    cursor: pointer;
-    transition: background 0.15s;
+    flex: 1; -webkit-appearance: none; height: 3px;
+    border-radius: 999px; background: var(--bg-raised);
+    border: 1px solid var(--border-dim); outline: none; cursor: pointer;
   }
   input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--text-pri);
-    border: 2px solid var(--bg-card);
-    box-shadow: 0 0 0 1px var(--border-mid);
-    cursor: pointer;
+    -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%;
+    background: var(--text-pri); border: 2px solid var(--bg-card);
+    box-shadow: 0 0 0 1px var(--border-mid); cursor: pointer;
     transition: background 0.12s, transform 0.1s;
   }
-  input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); transform: scale(1.15); }
-  input[type=range].accent-range { accent-color: var(--accent); }
-  .vol-val {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--text-sec);
-    width: 38px;
-    text-align: right;
-    flex-shrink: 0;
-  }
+  input[type=range]::-webkit-slider-thumb:hover { background: var(--accent); transform: scale(1.2); }
+  .vol-val { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); width: 38px; text-align: right; flex-shrink: 0; }
 
-  /* ── Upload area ── */
+  /* Upload */
   .upload-zone {
-    border: 1px dashed var(--border-mid);
-    border-radius: var(--radius-md);
-    padding: 1.5rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.15s;
-    margin-bottom: 12px;
-    position: relative;
+    border: 1px dashed var(--border-mid); border-radius: var(--radius-md);
+    padding: 1.4rem 1rem; text-align: center; cursor: pointer;
+    transition: all 0.15s; margin-bottom: 10px; position: relative;
   }
-  .upload-zone:hover, .upload-zone.dragover {
-    border-color: var(--accent);
-    background: var(--accent-dim);
-  }
-  .upload-zone input[type=file] {
-    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
-  }
-  .upload-icon { font-size: 26px; margin-bottom: 8px; color: var(--text-hint); }
+  .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: var(--accent-dim); }
+  .upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-icon { font-size: 22px; margin-bottom: 6px; }
   .upload-text { font-size: 13px; color: var(--text-sec); }
   .upload-text strong { color: var(--text-pri); font-weight: 500; }
-  .upload-hint { font-size: 11px; color: var(--text-hint); margin-top: 4px; }
+  .upload-hint { font-size: 11px; color: var(--text-hint); margin-top: 3px; }
 
-  /* ── URL input ── */
-  .url-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 14px;
+  .or-divider {
+    text-align: center; font-size: 11px; color: var(--text-hint);
+    margin: 8px 0; position: relative;
   }
+  .or-divider::before, .or-divider::after {
+    content: ''; position: absolute; top: 50%; width: 44%; height: 1px;
+    background: var(--border-dim);
+  }
+  .or-divider::before { left: 0; } .or-divider::after { right: 0; }
+
+  .url-row { display: flex; gap: 8px; margin-bottom: 12px; }
   .url-input {
-    flex: 1;
-    background: var(--bg-raised);
-    border: 1px solid var(--border-dim);
-    border-radius: var(--radius-sm);
-    padding: 9px 14px;
-    font-size: 13px;
-    color: var(--text-pri);
-    font-family: 'DM Mono', monospace;
-    outline: none;
+    flex: 1; background: var(--bg-raised); border: 1px solid var(--border-dim);
+    border-radius: var(--radius-sm); padding: 9px 12px; font-size: 12px;
+    color: var(--text-pri); font-family: 'DM Mono', monospace; outline: none;
     transition: border-color 0.15s;
   }
   .url-input::placeholder { color: var(--text-hint); }
   .url-input:focus { border-color: var(--border-hi); }
 
-  button {
-    font-family: 'DM Sans', sans-serif;
-    cursor: pointer;
-    transition: all 0.12s;
-    border: none;
-    outline: none;
-  }
+  /* Buttons */
+  button { font-family: 'DM Sans', sans-serif; cursor: pointer; outline: none; border: none; transition: all 0.12s; }
   .btn {
-    background: var(--bg-raised);
-    border: 1px solid var(--border-mid);
-    color: var(--text-pri);
-    border-radius: var(--radius-sm);
-    padding: 9px 18px;
-    font-size: 13px;
-    font-weight: 500;
+    background: var(--bg-raised); border: 1px solid var(--border-mid);
+    color: var(--text-pri); border-radius: var(--radius-sm);
+    padding: 9px 16px; font-size: 13px; font-weight: 500;
   }
   .btn:hover { background: var(--bg-hover); border-color: var(--border-hi); }
   .btn:active { transform: scale(0.97); }
-  .btn-accent {
-    background: var(--accent);
-    color: #0e1a10;
-    border-color: transparent;
-    font-weight: 600;
-  }
-  .btn-accent:hover { opacity: 0.88; background: var(--accent); }
-  .btn-danger {
-    background: transparent;
-    border: 1px solid rgba(224,112,112,0.3);
-    color: var(--danger);
-  }
-  .btn-danger:hover { background: rgba(224,112,112,0.08); }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
 
-  /* ── Track info chip ── */
+  /* Track info */
   .track-info {
-    background: var(--bg-raised);
-    border: 1px solid var(--border-dim);
-    border-radius: var(--radius-sm);
-    padding: 8px 14px;
-    font-size: 12px;
-    color: var(--text-sec);
-    margin-bottom: 12px;
+    background: var(--bg-raised); border: 1px solid var(--border-dim);
+    border-radius: var(--radius-sm); padding: 8px 12px;
+    font-size: 12px; color: var(--text-sec); margin-bottom: 12px;
     font-family: 'DM Mono', monospace;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 36px;
+    display: flex; align-items: center; gap: 8px; min-height: 36px;
   }
-  .track-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--text-hint); flex-shrink: 0;
-  }
-  .track-dot.playing { background: var(--accent); animation: pulse 1.2s infinite; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-hint); flex-shrink: 0; transition: background 0.3s; }
+  .dot.playing { background: var(--accent); animation: pulse 1.3s infinite; }
   @keyframes pulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(168,230,176,0.5); }
-    50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(168,230,176,0); }
+    0%,100% { opacity:1; box-shadow: 0 0 0 0 var(--accent-glow); }
+    50%      { opacity:.7; box-shadow: 0 0 0 5px transparent; }
   }
 
-  /* ── Player ── */
-  .player {
-    background: var(--bg-raised);
-    border: 1px solid var(--border-mid);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem 1.5rem;
-    margin-top: 4px;
-  }
+  hr.divider { border: none; border-top: 1px solid var(--border-dim); margin: 1.1rem 0; }
 
-  .player-top {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 1rem;
-  }
-
-  .play-btn {
-    width: 48px; height: 48px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #0e1a10;
-    font-size: 18px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    border: none;
-    transition: all 0.15s;
-    box-shadow: 0 0 0 0 rgba(168,230,176,0);
-  }
-  .play-btn:hover { transform: scale(1.06); box-shadow: 0 0 16px rgba(168,230,176,0.25); }
-  .play-btn:active { transform: scale(0.96); }
-  .play-btn.playing { background: var(--accent2); }
-
-  .player-meta { flex: 1; min-width: 0; }
-  .player-title {
-    font-size: 14px; font-weight: 500; color: var(--text-pri);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    margin-bottom: 2px;
-  }
-  .player-sub { font-size: 11px; color: var(--text-hint); font-family: 'DM Mono', monospace; }
-
-  /* progress bar */
-  .progress-wrap {
-    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
-  }
-  .time-label {
-    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-hint); width: 36px; flex-shrink: 0;
-  }
-  .time-label.right { text-align: right; }
-  input.progress-bar {
-    flex: 1;
-    -webkit-appearance: none;
-    height: 3px;
-    border-radius: 999px;
-    background: var(--bg-card);
-    border: none;
-    outline: none;
-    cursor: pointer;
-  }
-  input.progress-bar::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    background: var(--accent);
-    cursor: pointer;
-    box-shadow: none;
-    transition: transform 0.1s;
-  }
-  input.progress-bar::-webkit-slider-thumb:hover { transform: scale(1.4); }
-
-  /* controls row */
-  .controls-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-    margin-top: 4px;
-  }
-  .ctrl-block { }
-  .ctrl-block-label {
-    font-size: 11px; color: var(--text-hint); margin-bottom: 6px;
-    font-family: 'DM Mono', monospace; letter-spacing: 0.5px;
-  }
-  .ctrl-slider-row {
-    display: flex; align-items: center; gap: 8px;
-  }
-  .ctrl-val {
-    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent);
-    width: 32px; text-align: right; flex-shrink: 0;
-  }
-
-  /* waveform visualizer bars */
-  .vis-wrap {
-    display: flex; align-items: flex-end; gap: 2px;
-    height: 28px; margin-bottom: 10px;
-  }
-  .vis-bar {
-    flex: 1; background: var(--border-dim);
-    border-radius: 2px;
-    transition: height 0.1s ease, background 0.2s;
-    min-height: 3px;
-  }
-  .vis-bar.active { background: var(--accent); opacity: 0.6; }
-
-  /* status */
-  .status-row {
-    display: flex; align-items: center; gap: 10px;
-    margin-top: 1rem; padding-top: 1rem;
-    border-top: 1px solid var(--border-dim);
-  }
-  .status-chip {
-    font-size: 11px; font-family: 'DM Mono', monospace;
-    background: var(--bg-card);
-    border: 1px solid var(--border-dim);
-    border-radius: 6px;
-    padding: 3px 9px;
-    color: var(--text-hint);
-  }
-  .status-chip.on { border-color: rgba(168,230,176,0.3); color: var(--accent); background: var(--accent-dim); }
-
-  /* divider */
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border-dim);
-    margin: 1.25rem 0;
-  }
-
-  /* speed display */
-  .speed-badges {
-    display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;
-  }
+  /* Speed badges */
+  .speed-badges { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
   .speed-badge {
     font-size: 11px; font-family: 'DM Mono', monospace;
-    padding: 3px 10px; border-radius: 6px;
+    padding: 3px 9px; border-radius: 6px;
     background: var(--bg-raised); border: 1px solid var(--border-dim);
     cursor: pointer; color: var(--text-sec); transition: all 0.12s;
   }
   .speed-badge:hover { border-color: var(--border-hi); color: var(--text-pri); }
   .speed-badge.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
 
-  /* scrollbar */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
+  /* Player */
+  .player {
+    background: var(--bg-raised); border: 1px solid var(--border-mid);
+    border-radius: var(--radius-lg); padding: 1.25rem 1.4rem;
+  }
+
+  /* Visualizer */
+  .vis-wrap { display: flex; align-items: flex-end; gap: 2px; height: 30px; margin-bottom: 12px; }
+  .vb { flex:1; background: var(--border-dim); border-radius: 2px; min-height: 3px; transition: height 0.08s ease; }
+  .vb.on { background: var(--accent); opacity: 0.55; }
+
+  .player-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .play-btn {
+    width: 50px; height: 50px; border-radius: 50%;
+    background: var(--accent); color: #081410; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; border: none;
+    box-shadow: 0 0 0 0 var(--accent-glow);
+    transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+  }
+  .play-btn:hover { transform: scale(1.07); box-shadow: 0 0 20px var(--accent-glow); }
+  .play-btn:active { transform: scale(0.95); }
+  .play-btn.playing { background: var(--accent2); }
+
+  .player-meta { flex: 1; min-width: 0; }
+  .player-title { font-size: 14px; font-weight: 500; color: var(--text-pri); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+  .player-sub { font-size: 11px; color: var(--text-hint); font-family: 'DM Mono', monospace; }
+
+  .progress-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .t { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-hint); width: 34px; flex-shrink: 0; }
+  .t.r { text-align: right; }
+  input.pbar {
+    flex: 1; -webkit-appearance: none; height: 3px;
+    border-radius: 999px; background: var(--bg-card); border: none; outline: none; cursor: pointer;
+  }
+  input.pbar::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--accent); cursor: pointer;
+    transition: transform 0.1s;
+  }
+  input.pbar::-webkit-slider-thumb:hover { transform: scale(1.4); }
+
+  .ctrl-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .ctrl-lbl { font-size: 10px; color: var(--text-hint); margin-bottom: 5px; font-family: 'DM Mono', monospace; letter-spacing: 0.5px; }
+  .ctrl-inner { display: flex; align-items: center; gap: 7px; }
+  .ctrl-val { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); width: 34px; text-align: right; flex-shrink: 0; }
+
+  .status-strip { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; padding-top: 10px; border-top: 1px solid var(--border-dim); }
+  .chip {
+    font-size: 10px; font-family: 'DM Mono', monospace;
+    background: var(--bg-card); border: 1px solid var(--border-dim);
+    border-radius: 6px; padding: 3px 9px; color: var(--text-hint);
+  }
+  .chip.on { border-color: rgba(126,232,162,0.3); color: var(--accent); background: var(--accent-dim); }
+
+  ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 99px; }
+
+  @media (max-width: 520px) {
+    .ctrl-row { grid-template-columns: 1fr 1fr; }
+    .bg-grid  { grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); }
+  }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-logo">♫ nhacnen</div>
-  <div class="header-sub">Trình phát nhạc nền + âm thanh</div>
+  <div class="logo">♫ nhacnen mixer</div>
+  <span class="logo-dot">·</span>
+  <div class="header-sub">hanhdeptrai242 / nhacnen</div>
 </div>
 
-<!-- NHẠC NỀN -->
+<!-- ① NHẠC NỀN -->
 <div class="card">
-  <div class="section-label">① Nhạc nền — /nhacnen</div>
-
+  <div class="section-label">① Nhạc nền</div>
   <div class="bg-grid" id="bgGrid">
-    <!-- Populated by JS -->
+    <div class="state-msg" id="bgStatus">Đang tải danh sách từ GitHub…</div>
   </div>
-
-  <div class="track-info" id="bgInfo">
-    <div class="track-dot" id="bgDot"></div>
+  <div class="track-info">
+    <div class="dot" id="bgDot"></div>
     <span id="bgInfoText">Chưa chọn bài nhạc nền</span>
   </div>
-
   <hr class="divider" />
-
-  <div class="section-label" style="margin-bottom:8px;">Âm lượng nhạc nền</div>
   <div class="vol-row">
-    <div class="vol-label">Nhạc nền <span id="bgVolLabel">20%</span></div>
-    <input type="range" id="bgVol" min="0" max="100" value="20" />
+    <div class="vol-label">Âm lượng nền</div>
+    <input type="range" id="bgVol" min="0" max="100" value="20" oninput="syncBgVol(this.value)" />
     <div class="vol-val" id="bgVolVal">20%</div>
   </div>
 </div>
 
-<!-- ÂM THANH TẢI LÊN -->
+<!-- ② ÂM THANH TẢI LÊN -->
 <div class="card">
   <div class="section-label">② Âm thanh tải lên</div>
-
   <div class="upload-zone" id="uploadZone">
     <input type="file" id="fileInput" accept="audio/*" />
     <div class="upload-icon">⬆</div>
     <div class="upload-text"><strong>Kéo thả file</strong> hoặc click để chọn</div>
-    <div class="upload-hint">MP3, WAV, OGG, M4A, …</div>
+    <div class="upload-hint">MP3 · WAV · OGG · M4A · FLAC</div>
   </div>
-
-  <div style="text-align:center; font-size:12px; color:var(--text-hint); margin: -4px 0 10px;">— hoặc từ URL —</div>
-
+  <div class="or-divider">hoặc từ URL</div>
   <div class="url-row">
     <input class="url-input" type="url" id="urlInput" placeholder="https://example.com/audio.mp3" />
-    <button class="btn" onclick="loadFromUrl()">Tải</button>
+    <button class="btn" onclick="loadFromUrl()">Tải URL</button>
   </div>
-
-  <div class="track-info" id="mainInfo">
-    <div class="track-dot" id="mainDot"></div>
+  <div class="track-info">
+    <div class="dot" id="mainDot"></div>
     <span id="mainInfoText">Chưa có file âm thanh</span>
   </div>
-
   <hr class="divider" />
-
-  <div class="section-label" style="margin-bottom:8px;">Điều chỉnh âm thanh tải lên</div>
-
   <div class="vol-row">
-    <div class="vol-label">Âm lượng <span id="mainVolLabel">100%</span></div>
-    <input type="range" id="mainVol" min="0" max="100" value="100" />
+    <div class="vol-label">Âm lượng</div>
+    <input type="range" id="mainVol" min="0" max="100" value="100" oninput="syncMainVol(this.value)" />
     <div class="vol-val" id="mainVolVal">100%</div>
   </div>
-
-  <div class="vol-row" style="margin-top:4px;">
-    <div class="vol-label">Tốc độ <span id="speedLabel">1.0×</span></div>
-    <input type="range" id="speedRange" min="0.25" max="3" step="0.05" value="1" />
-    <div class="vol-val" id="speedVal">1.0×</div>
+  <div class="vol-row" style="margin-top:2px;">
+    <div class="vol-label">Tốc độ</div>
+    <input type="range" id="speedRange" min="0.25" max="3" step="0.05" value="1" oninput="syncSpeed(this.value)" />
+    <div class="vol-val" id="speedVal">1×</div>
   </div>
-
   <div class="speed-badges" id="speedBadges">
     <div class="speed-badge" data-v="0.5">0.5×</div>
     <div class="speed-badge" data-v="0.75">0.75×</div>
@@ -497,221 +315,209 @@
   </div>
 </div>
 
-<!-- PLAYER -->
-<div class="card" style="padding-bottom:1.75rem;">
-  <div class="section-label">③ Phát</div>
-
+<!-- ③ PLAYER -->
+<div class="card">
+  <div class="section-label">③ Trình phát</div>
   <div class="player">
-    <!-- Visualizer -->
     <div class="vis-wrap" id="visWrap"></div>
-
-    <!-- Play btn + info -->
     <div class="player-top">
       <button class="play-btn" id="masterPlay" onclick="togglePlay()">▶</button>
       <div class="player-meta">
         <div class="player-title" id="playerTitle">Chưa sẵn sàng</div>
-        <div class="player-sub" id="playerSub">Chọn nhạc nền và file âm thanh để bắt đầu</div>
+        <div class="player-sub" id="playerSub">Chọn nhạc nền và file âm thanh</div>
       </div>
-      <button class="btn btn-danger" style="padding:6px 12px;font-size:12px;" onclick="stopAll()">■ Dừng</button>
+      <button class="btn btn-sm" onclick="stopAll()" style="color:var(--danger);border-color:rgba(224,112,112,0.25);">■ Dừng</button>
     </div>
-
-    <!-- Progress (main audio) -->
     <div class="progress-wrap">
-      <div class="time-label" id="timeCur">0:00</div>
-      <input type="range" class="progress-bar" id="progressBar" min="0" max="100" value="0" step="0.1" oninput="seekMain(this.value)" />
-      <div class="time-label right" id="timeDur">0:00</div>
+      <span class="t" id="timeCur">0:00</span>
+      <input type="range" class="pbar" id="pbar" min="0" max="100" value="0" step="0.1" oninput="seekMain(this.value)" />
+      <span class="t r" id="timeDur">0:00</span>
     </div>
-
-    <!-- 3 sliders inline -->
-    <div class="controls-row">
-      <div class="ctrl-block">
-        <div class="ctrl-block-label">Nhạc nền</div>
-        <div class="ctrl-slider-row">
-          <input type="range" id="bgVolInline" min="0" max="100" value="20" oninput="syncBgVol(this.value)" style="flex:1;" />
-          <div class="ctrl-val" id="bgVolInlineVal">20%</div>
+    <div class="ctrl-row">
+      <div>
+        <div class="ctrl-lbl">Nhạc nền</div>
+        <div class="ctrl-inner">
+          <input type="range" id="bgVolI" min="0" max="100" value="20" oninput="syncBgVol(this.value)" />
+          <div class="ctrl-val" id="bgVolIV">20%</div>
         </div>
       </div>
-      <div class="ctrl-block">
-        <div class="ctrl-block-label">Âm thanh chính</div>
-        <div class="ctrl-slider-row">
-          <input type="range" id="mainVolInline" min="0" max="100" value="100" oninput="syncMainVol(this.value)" style="flex:1;" />
-          <div class="ctrl-val" id="mainVolInlineVal">100%</div>
+      <div>
+        <div class="ctrl-lbl">Âm thanh chính</div>
+        <div class="ctrl-inner">
+          <input type="range" id="mainVolI" min="0" max="100" value="100" oninput="syncMainVol(this.value)" />
+          <div class="ctrl-val" id="mainVolIV">100%</div>
         </div>
       </div>
-      <div class="ctrl-block">
-        <div class="ctrl-block-label">Tốc độ</div>
-        <div class="ctrl-slider-row">
-          <input type="range" id="speedInline" min="0.25" max="3" step="0.05" value="1" oninput="syncSpeed(this.value)" style="flex:1;" />
-          <div class="ctrl-val" id="speedInlineVal">1.0×</div>
+      <div>
+        <div class="ctrl-lbl">Tốc độ</div>
+        <div class="ctrl-inner">
+          <input type="range" id="speedI" min="0.25" max="3" step="0.05" value="1" oninput="syncSpeed(this.value)" />
+          <div class="ctrl-val" id="speedIV">1×</div>
         </div>
       </div>
     </div>
-
-    <!-- Status -->
-    <div class="status-row">
-      <div class="status-chip" id="chipBg">Nhạc nền: —</div>
-      <div class="status-chip" id="chipMain">File: —</div>
-      <div class="status-chip" id="chipLoop">Loop: bật</div>
+    <div class="status-strip">
+      <div class="chip" id="chipBg">Nhạc nền: —</div>
+      <div class="chip" id="chipMain">File: —</div>
+      <div class="chip on">Loop: bật</div>
     </div>
   </div>
 </div>
 
 <script>
-// ─── Config: danh sách file trong /nhacnen ───────────────────────
-// Thêm/bớt tên file theo đúng những gì bạn upload lên GitHub
-const NHAC_NEN_LIST = [
-  "rain-soft.mp3",
-  "forest-ambience.mp3",
-  "lofi-chill.mp3",
-  "ocean-waves.mp3",
-  "cafe-noise.mp3",
-  "fireplace.mp3",
-];
-const NHAC_NEN_PATH = "./nhacnen/"; // thư mục tương đối
+// ── Config ─────────────────────────────────────────────────────
+const OWNER  = 'hanhdeptrai242';
+const REPO   = 'nhacnen';
+const FOLDER = 'nhacnen';
+const AUDIO_EXTS = ['.mp3','.wav','.ogg','.m4a','.flac','.aac','.opus'];
+const API_URL  = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FOLDER}`;
+const RAW_BASE = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${FOLDER}/`;
 
-// ─── State ───────────────────────────────────────────────────────
-let bgAudio = new Audio();
-let mainAudio = new Audio();
-let isPlaying = false;
-let animFrame = null;
-let selectedBg = null;
-
-bgAudio.loop = true;
-bgAudio.volume = 0.20;
+// ── Audio ──────────────────────────────────────────────────────
+const bgAudio   = new Audio();
+const mainAudio = new Audio();
+bgAudio.loop    = true;
+bgAudio.volume  = 0.20;
 mainAudio.volume = 1.0;
 
-// ─── Build BG list ───────────────────────────────────────────────
-const grid = document.getElementById('bgGrid');
-NHAC_NEN_LIST.forEach(name => {
-  const item = document.createElement('div');
-  item.className = 'bg-item';
-  item.dataset.src = NHAC_NEN_PATH + name;
-  item.dataset.name = name.replace(/\.[^.]+$/, '');
-  item.innerHTML = `<div class="bg-icon">♪</div><div class="bg-name">${name.replace(/\.[^.]+$/, '')}</div>`;
-  item.addEventListener('click', () => selectBg(item));
-  grid.appendChild(item);
-});
+let isPlaying = false;
+let selectedBg = null;
+let rafId = null;
 
+// ── Fetch list from GitHub API ──────────────────────────────────
+async function fetchFileList() {
+  const grid   = document.getElementById('bgGrid');
+  const status = document.getElementById('bgStatus');
+  try {
+    const res = await fetch(API_URL, {
+      headers: {
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    });
+    if (!res.ok) throw new Error(`GitHub API: HTTP ${res.status}`);
+    const files = await res.json();
+
+    const audioFiles = files.filter(f =>
+      f.type === 'file' && AUDIO_EXTS.some(ext => f.name.toLowerCase().endsWith(ext))
+    );
+
+    if (audioFiles.length === 0) {
+      status.textContent = 'Không tìm thấy file audio trong /nhacnen';
+      status.classList.add('err');
+      return;
+    }
+
+    status.remove();
+    audioFiles.forEach(f => {
+      const name = f.name.replace(/\.[^.]+$/, '');
+      const item = document.createElement('div');
+      item.className = 'bg-item';
+      item.dataset.src  = RAW_BASE + encodeURIComponent(f.name);
+      item.dataset.name = name;
+      item.innerHTML = `<span class="bg-icon">♪</span><span class="bg-name" title="${f.name}">${name}</span>`;
+      item.addEventListener('click', () => selectBg(item));
+      grid.appendChild(item);
+    });
+
+  } catch (e) {
+    status.textContent = `Lỗi: ${e.message}`;
+    status.classList.add('err');
+  }
+}
+fetchFileList();
+
+// ── Select BG track ────────────────────────────────────────────
 function selectBg(item) {
   document.querySelectorAll('.bg-item').forEach(i => i.classList.remove('active'));
   item.classList.add('active');
   selectedBg = { src: item.dataset.src, name: item.dataset.name };
   bgAudio.src = selectedBg.src;
   bgAudio.load();
-  updateBgInfo();
-  updatePlayerMeta();
+  document.getElementById('bgInfoText').textContent = selectedBg.name;
   document.getElementById('chipBg').textContent = `Nhạc nền: ${selectedBg.name}`;
   document.getElementById('chipBg').classList.add('on');
+  updateMeta();
   if (isPlaying) bgAudio.play().catch(() => {});
 }
 
-function updateBgInfo() {
-  const dot = document.getElementById('bgDot');
-  const txt = document.getElementById('bgInfoText');
-  if (selectedBg) {
-    txt.textContent = selectedBg.name;
-    dot.className = 'track-dot' + (isPlaying ? ' playing' : '');
-  } else {
-    txt.textContent = 'Chưa chọn bài nhạc nền';
-    dot.className = 'track-dot';
-  }
-}
-
-// ─── Volume sync ─────────────────────────────────────────────────
+// ── Sync helpers ───────────────────────────────────────────────
 function syncBgVol(v) {
-  bgAudio.volume = v / 100;
-  const label = `${Math.round(v)}%`;
-  document.getElementById('bgVolLabel').textContent = label;
-  document.getElementById('bgVolVal').textContent = label;
-  document.getElementById('bgVol').value = v;
-  document.getElementById('bgVolInline').value = v;
-  document.getElementById('bgVolInlineVal').textContent = label;
+  v = +v; bgAudio.volume = v / 100;
+  const s = Math.round(v) + '%';
+  setText(['bgVolVal','bgVolIV'], s);
+  setVal(['bgVol','bgVolI'], v);
 }
 function syncMainVol(v) {
-  mainAudio.volume = v / 100;
-  const label = `${Math.round(v)}%`;
-  document.getElementById('mainVolLabel').textContent = label;
-  document.getElementById('mainVolVal').textContent = label;
-  document.getElementById('mainVol').value = v;
-  document.getElementById('mainVolInline').value = v;
-  document.getElementById('mainVolInlineVal').textContent = label;
+  v = +v; mainAudio.volume = v / 100;
+  const s = Math.round(v) + '%';
+  setText(['mainVolVal','mainVolIV'], s);
+  setVal(['mainVol','mainVolI'], v);
 }
 function syncSpeed(v) {
-  const num = parseFloat(v);
-  mainAudio.playbackRate = num;
-  const label = `${num.toFixed(2).replace(/\.?0+$/, '')}×`;
-  document.getElementById('speedLabel').textContent = label;
-  document.getElementById('speedVal').textContent = label;
-  document.getElementById('speedRange').value = v;
-  document.getElementById('speedInline').value = v;
-  document.getElementById('speedInlineVal').textContent = label;
-  document.querySelectorAll('.speed-badge').forEach(b => {
-    b.classList.toggle('active', parseFloat(b.dataset.v) === num);
-  });
+  v = parseFloat(v); mainAudio.playbackRate = v;
+  const s = v % 1 === 0 ? v + '×' : v.toFixed(2).replace(/\.?0+$/, '') + '×';
+  setText(['speedVal','speedIV'], s);
+  setVal(['speedRange','speedI'], v);
+  document.querySelectorAll('.speed-badge').forEach(b =>
+    b.classList.toggle('active', Math.abs(parseFloat(b.dataset.v) - v) < 0.01)
+  );
 }
+function setText(ids, t) { ids.forEach(id => { const el = document.getElementById(id); if (el) el.textContent = t; }); }
+function setVal(ids, v)  { ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = v; }); }
 
-document.getElementById('bgVol').addEventListener('input', e => syncBgVol(e.target.value));
-document.getElementById('mainVol').addEventListener('input', e => syncMainVol(e.target.value));
-document.getElementById('speedRange').addEventListener('input', e => syncSpeed(e.target.value));
-document.getElementById('speedInline').addEventListener('input', e => syncSpeed(e.target.value));
-document.getElementById('mainVolInline').addEventListener('input', e => syncMainVol(e.target.value));
-document.getElementById('bgVolInline').addEventListener('input', e => syncBgVol(e.target.value));
+document.querySelectorAll('.speed-badge').forEach(b =>
+  b.addEventListener('click', () => syncSpeed(b.dataset.v))
+);
 
-document.querySelectorAll('.speed-badge').forEach(b => {
-  b.addEventListener('click', () => syncSpeed(b.dataset.v));
-});
-
-// ─── File upload ─────────────────────────────────────────────────
-const fileInput = document.getElementById('fileInput');
+// ── File upload ────────────────────────────────────────────────
+const fileInput  = document.getElementById('fileInput');
 const uploadZone = document.getElementById('uploadZone');
 
 fileInput.addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (!file) return;
-  loadMainAudio(URL.createObjectURL(file), file.name);
+  const f = e.target.files[0];
+  if (f) loadMainAudio(URL.createObjectURL(f), f.name);
 });
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragover',  e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
 uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
 uploadZone.addEventListener('drop', e => {
   e.preventDefault(); uploadZone.classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith('audio/')) loadMainAudio(URL.createObjectURL(file), file.name);
+  const f = e.dataTransfer.files[0];
+  if (f && f.type.startsWith('audio/')) loadMainAudio(URL.createObjectURL(f), f.name);
 });
 
 function loadFromUrl() {
   const url = document.getElementById('urlInput').value.trim();
   if (!url) return;
-  loadMainAudio(url, url.split('/').pop());
+  loadMainAudio(url, url.split('/').pop().split('?')[0]);
 }
 
 function loadMainAudio(src, name) {
   mainAudio.src = src;
-  mainAudio.load();
   mainAudio.playbackRate = parseFloat(document.getElementById('speedRange').value);
-  mainAudio.volume = parseFloat(document.getElementById('mainVol').value) / 100;
+  mainAudio.volume = parseInt(document.getElementById('mainVol').value) / 100;
+  mainAudio.load();
   document.getElementById('mainInfoText').textContent = name;
-  document.getElementById('mainDot').className = 'track-dot';
   document.getElementById('chipMain').textContent = `File: ${name}`;
   document.getElementById('chipMain').classList.add('on');
-  updatePlayerMeta();
+  updateMeta();
+  mainAudio.addEventListener('loadedmetadata', () => {
+    document.getElementById('timeDur').textContent = fmt(mainAudio.duration);
+    document.getElementById('pbar').max = mainAudio.duration;
+  }, { once: true });
   if (isPlaying) mainAudio.play().catch(() => {});
-  mainAudio.addEventListener('loadedmetadata', updateDuration, { once: true });
+}
+mainAudio.addEventListener('ended', stopAll);
+
+function updateMeta() {
+  const mt = document.getElementById('mainInfoText').textContent;
+  const hasMain = mt !== 'Chưa có file âm thanh';
+  document.getElementById('playerTitle').textContent = hasMain ? mt : (selectedBg ? selectedBg.name : 'Chưa sẵn sàng');
+  document.getElementById('playerSub').textContent   = selectedBg ? `♪ ${selectedBg.name}` : 'Chưa chọn nhạc nền';
 }
 
-function updatePlayerMeta() {
-  const t = document.getElementById('mainInfoText').textContent;
-  const b = selectedBg ? selectedBg.name : '—';
-  document.getElementById('playerTitle').textContent =
-    t !== 'Chưa có file âm thanh' ? t : (selectedBg ? selectedBg.name : 'Chưa sẵn sàng');
-  document.getElementById('playerSub').textContent =
-    selectedBg ? `Nhạc nền: ${b}` : 'Chưa chọn nhạc nền';
-}
-
-// ─── Playback ────────────────────────────────────────────────────
-function togglePlay() {
-  if (isPlaying) pauseAll();
-  else playAll();
-}
+// ── Playback ───────────────────────────────────────────────────
+function togglePlay() { isPlaying ? pauseAll() : playAll(); }
 
 function playAll() {
   isPlaying = true;
@@ -719,90 +525,68 @@ function playAll() {
   if (mainAudio.src) mainAudio.play().catch(() => {});
   document.getElementById('masterPlay').innerHTML = '⏸';
   document.getElementById('masterPlay').classList.add('playing');
-  document.getElementById('bgDot').className = selectedBg ? 'track-dot playing' : 'track-dot';
-  document.getElementById('mainDot').className = mainAudio.src ? 'track-dot playing' : 'track-dot';
-  tickVis();
-  tickProgress();
+  document.getElementById('bgDot').className   = selectedBg ? 'dot playing' : 'dot';
+  document.getElementById('mainDot').className = mainAudio.src ? 'dot playing' : 'dot';
+  tickVis(); tickProg();
 }
 
 function pauseAll() {
   isPlaying = false;
-  bgAudio.pause();
-  mainAudio.pause();
+  bgAudio.pause(); mainAudio.pause();
   document.getElementById('masterPlay').innerHTML = '▶';
   document.getElementById('masterPlay').classList.remove('playing');
-  document.getElementById('bgDot').className = 'track-dot';
-  document.getElementById('mainDot').className = 'track-dot';
-  cancelAnimationFrame(animFrame);
+  document.getElementById('bgDot').className   = 'dot';
+  document.getElementById('mainDot').className = 'dot';
+  cancelAnimationFrame(rafId);
 }
 
 function stopAll() {
   pauseAll();
-  bgAudio.currentTime = 0;
-  mainAudio.currentTime = 0;
-  document.getElementById('progressBar').value = 0;
+  bgAudio.currentTime = 0; mainAudio.currentTime = 0;
+  document.getElementById('pbar').value = 0;
   document.getElementById('timeCur').textContent = '0:00';
   resetVis();
 }
 
-mainAudio.addEventListener('ended', () => { stopAll(); });
+function seekMain(v) { if (mainAudio.duration) mainAudio.currentTime = +v; }
 
-// ─── Progress ────────────────────────────────────────────────────
-function updateDuration() {
-  const d = mainAudio.duration;
-  document.getElementById('timeDur').textContent = fmtTime(d);
-  document.getElementById('progressBar').max = isNaN(d) ? 100 : d;
-}
-
-function seekMain(v) {
-  if (mainAudio.duration) mainAudio.currentTime = v;
-}
-
-function tickProgress() {
+function tickProg() {
   if (!isPlaying) return;
-  const cur = mainAudio.currentTime || 0;
-  const dur = mainAudio.duration || 0;
-  document.getElementById('timeCur').textContent = fmtTime(cur);
-  if (dur) document.getElementById('progressBar').value = cur;
-  animFrame = requestAnimationFrame(tickProgress);
+  const cur = mainAudio.currentTime || 0, dur = mainAudio.duration || 0;
+  document.getElementById('timeCur').textContent = fmt(cur);
+  if (dur) document.getElementById('pbar').value = cur;
+  rafId = requestAnimationFrame(tickProg);
 }
 
-function fmtTime(s) {
-  if (isNaN(s)) return '0:00';
-  const m = Math.floor(s / 60), sec = Math.floor(s % 60);
-  return `${m}:${sec.toString().padStart(2, '0')}`;
+function fmt(s) {
+  if (!s || isNaN(s)) return '0:00';
+  return `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
 }
 
-// ─── Visualizer bars (simulated) ─────────────────────────────────
-const VIS_COUNT = 40;
+// ── Visualizer ─────────────────────────────────────────────────
+const VIS = 44;
 const visWrap = document.getElementById('visWrap');
-const bars = [];
-for (let i = 0; i < VIS_COUNT; i++) {
+const bars = Array.from({ length: VIS }, () => {
   const b = document.createElement('div');
-  b.className = 'vis-bar';
-  b.style.height = '3px';
-  visWrap.appendChild(b);
-  bars.push(b);
-}
+  b.className = 'vb'; b.style.height = '3px';
+  visWrap.appendChild(b); return b;
+});
 
-let visPhase = 0;
+let phase = 0;
 function tickVis() {
   if (!isPlaying) return;
-  visPhase += 0.06;
+  phase += 0.055;
   bars.forEach((b, i) => {
-    const env = Math.sin(Math.PI * i / (VIS_COUNT - 1));
-    const wave = Math.sin(visPhase + i * 0.35) * 0.5 + 0.5;
-    const rand = 0.7 + Math.random() * 0.3;
-    const h = Math.max(3, Math.round(env * wave * rand * 26));
+    const env  = Math.sin(Math.PI * i / (VIS - 1));
+    const wave = Math.sin(phase + i * 0.38) * 0.5 + 0.5;
+    const r    = 0.65 + Math.random() * 0.35;
+    const h    = Math.max(3, Math.round(env * wave * r * 27));
     b.style.height = h + 'px';
-    b.classList.toggle('active', h > 8);
+    b.classList.toggle('on', h > 9);
   });
   requestAnimationFrame(tickVis);
 }
-
-function resetVis() {
-  bars.forEach(b => { b.style.height = '3px'; b.classList.remove('active'); });
-}
+function resetVis() { bars.forEach(b => { b.style.height = '3px'; b.classList.remove('on'); }); }
 </script>
 </body>
 </html>
