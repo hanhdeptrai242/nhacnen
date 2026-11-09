@@ -666,7 +666,7 @@ const AUDIO_EXTS = ['.mp3','.wav','.ogg','.m4a','.flac','.aac','.opus'];
 const API_URL  = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FOLDER}`;
 const RAW_BASE = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${FOLDER}/`;
 
-// ── Audio & Web Audio API (Fix Mobile Volume & External URL) ──
+// ── Audio & Web Audio API (Fix Mobile Volume & Background) ─
 const bgAudio      = new Audio();
 const mainAudio    = new Audio();
 const previewAudio = new Audio();
@@ -684,7 +684,7 @@ let currentMainVol = 1.0;
 
 function initWebAudio() {
   if (webAudioInit) {
-    if (audioCtx && audioCtx.state === 'suspended') {
+    if (audioCtx && audioCtx.state !== 'running') {
       audioCtx.resume().catch(() => {});
     }
     return;
@@ -702,14 +702,33 @@ function initWebAudio() {
     bgGainNode.connect(audioCtx.destination);
     bgAudio.volume = 1.0;
 
+    // Tự động khôi phục khi trình duyệt ngắt AudioContext lúc chuyển app
+    audioCtx.onstatechange = () => {
+      if (isPlaying && audioCtx.state !== 'running') {
+        audioCtx.resume().catch(() => {});
+      }
+    };
+
     webAudioInit = true;
-    if (audioCtx.state === 'suspended') {
+    if (audioCtx.state !== 'running') {
       audioCtx.resume().catch(() => {});
     }
   } catch (e) {
     bgAudio.volume = currentBgVol;
   }
 }
+
+// Giữ nhạc nền tiếp tục chạy khi ẩn tab hoặc chuyển ứng dụng
+document.addEventListener('visibilitychange', () => {
+  if (isPlaying) {
+    if (audioCtx && audioCtx.state !== 'running') {
+      audioCtx.resume().catch(() => {});
+    }
+    if (selectedBg && bgAudio.paused) {
+      bgAudio.play().catch(() => {});
+    }
+  }
+});
 
 let isPlaying = false;
 let selectedBg = null;
