@@ -461,6 +461,8 @@ input[type=range].teal::-webkit-slider-thumb  { background: var(--c-teal); }
 
       <div class="flex gap-2 mb-3">
         <input class="url-inp" type="url" id="urlInput" placeholder="https://…/audio.mp3" />
+        <button onclick="pasteUrl()" class="md:hidden text-xs font-medium px-3 py-1.5 rounded-lg shrink-0 transition-all"
+          style="background:var(--c-raised);border:1px solid var(--c-border2);color:var(--c-teal);cursor:pointer;">Dán</button>
         <button onclick="loadFromUrl()" class="text-xs font-medium px-3 py-1.5 rounded-lg shrink-0 transition-all"
           style="background:var(--c-raised);border:1px solid var(--c-border2);color:var(--c-text);cursor:pointer;"
           onmouseover="this.style.borderColor='var(--c-border3)'" onmouseout="this.style.borderColor='var(--c-border2)'">Tải</button>
@@ -664,19 +666,17 @@ const AUDIO_EXTS = ['.mp3','.wav','.ogg','.m4a','.flac','.aac','.opus'];
 const API_URL  = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FOLDER}`;
 const RAW_BASE = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${FOLDER}/`;
 
-// ── Audio & Web Audio API (Fix Mobile Volume) ──────────────
+// ── Audio & Web Audio API (Fix Mobile Volume & External URL) ──
 const bgAudio      = new Audio();
 const mainAudio    = new Audio();
 const previewAudio = new Audio();
 
-bgAudio.crossOrigin   = 'anonymous';
-mainAudio.crossOrigin = 'anonymous';
-bgAudio.loop          = true;
-previewAudio.volume   = 0.5;
+bgAudio.crossOrigin = 'anonymous'; // Chỉ dùng CORS cho nhạc nền từ GitHub
+bgAudio.loop        = true;
+previewAudio.volume = 0.5;
 
 let audioCtx     = null;
 let bgGainNode   = null;
-let mainGainNode = null;
 let webAudioInit = false;
 
 let currentBgVol   = 0.20;
@@ -694,6 +694,7 @@ function initWebAudio() {
     if (!AudioCtx) return;
     audioCtx = new AudioCtx();
 
+    // Chỉ nối bgAudio vào GainNode để chỉnh âm lượng nhạc nền trên Mobile
     const bgSrc = audioCtx.createMediaElementSource(bgAudio);
     bgGainNode = audioCtx.createGain();
     bgGainNode.gain.value = currentBgVol;
@@ -701,21 +702,12 @@ function initWebAudio() {
     bgGainNode.connect(audioCtx.destination);
     bgAudio.volume = 1.0;
 
-    const mainSrc = audioCtx.createMediaElementSource(mainAudio);
-    mainGainNode = audioCtx.createGain();
-    mainGainNode.gain.value = currentMainVol;
-    mainSrc.connect(mainGainNode);
-    mainGainNode.connect(audioCtx.destination);
-    mainAudio.volume = 1.0;
-
     webAudioInit = true;
     if (audioCtx.state === 'suspended') {
       audioCtx.resume().catch(() => {});
     }
   } catch (e) {
-    // Fallback nếu trình duyệt chặn
     bgAudio.volume = currentBgVol;
-    mainAudio.volume = currentMainVol;
   }
 }
 
@@ -725,6 +717,21 @@ let rafId = null;
 let loopEnabled = true;
 let previewRafId = null;
 let currentPreviewBtn = null;
+
+// ── Paste URL (Mobile) ─────────────────────────────────────
+async function pasteUrl() {
+  const inp = document.getElementById('urlInput');
+  try {
+    const text = await navigator.clipboard.readText();
+    if (text) {
+      inp.value = text.trim();
+      inp.focus();
+    }
+  } catch (err) {
+    inp.focus();
+    alert('Trình duyệt không cho phép đọc clipboard tự động. Vui lòng nhấn giữ vào ô nhập để dán.');
+  }
+}
 
 // ── Image Slideshow ────────────────────────────────────────
 let images = [];
@@ -993,14 +1000,9 @@ function syncBgVol(v) {
   setText(['bgVolVal','bgVolIV'], s); setVal(['bgVol','bgVolI'], v);
 }
 function syncMainVol(v) {
-  initWebAudio();
   v = +v;
   currentMainVol = v / 100;
-  if (mainGainNode && audioCtx) {
-    mainGainNode.gain.setValueAtTime(currentMainVol, audioCtx.currentTime);
-  } else {
-    mainAudio.volume = currentMainVol;
-  }
+  mainAudio.volume = currentMainVol;
   const s = Math.round(v) + '%';
   setText(['mainVolVal','mainVolIV'], s); setVal(['mainVol','mainVolI'], v);
 }
@@ -1031,10 +1033,9 @@ function loadFromUrl() {
   if (url) loadMainAudio(url, url.split('/').pop().split('?')[0]);
 }
 function loadMainAudio(src, name) {
-  initWebAudio();
   mainAudio.src = src;
   mainAudio.playbackRate = parseFloat(document.getElementById('speedRange').value);
-  if (!webAudioInit) mainAudio.volume = currentMainVol;
+  mainAudio.volume = currentMainVol;
   mainAudio.load();
   document.getElementById('mainInfoText').textContent = name;
   document.getElementById('chipMain').textContent = name;
